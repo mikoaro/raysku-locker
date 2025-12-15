@@ -9,7 +9,6 @@
 
 
 
-###**README.md**```markdown
 # 📦 RaySKU Locker
 
 > **The Agentic Product Photography Studio.** > Automated, photorealistic product staging with 100% SKU fidelity using Physics-Guided Diffusion.
