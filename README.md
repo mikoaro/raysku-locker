@@ -9,11 +9,7 @@
 
 
 
-
-
-###2. Updated `README.md`I have replaced "Infinite Shelf" with "**RaySKU Locker**" throughout the documentation.
-
----
+```
 
 #📦 RaySKU Locker: Agentic Product Photography Studio> **Automated, photorealistic product staging with 100% SKU fidelity.**
 
