@@ -9,7 +9,7 @@
 
 
 
-```
+
 
 ###2. Updated `README.md`I have replaced "Infinite Shelf" with "**RaySKU Locker**" throughout the documentation.
 
