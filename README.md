@@ -9,90 +9,118 @@
 
 
 
-```
+###**README.md**```markdown
+# 📦 RaySKU Locker
 
-#📦 RaySKU Locker: Agentic Product Photography Studio> **Automated, photorealistic product staging with 100% SKU fidelity.**
+> **The Agentic Product Photography Studio.** > Automated, photorealistic product staging with 100% SKU fidelity using Physics-Guided Diffusion.
 
-**RaySKU Locker** acts as an AI-powered virtual photo studio. It allows brands to take a single product photo (a "SKU") and place it into any environment imaginable using natural language, without ever hallucinating or altering the original product's pixels.
+![Project Status](https://img.shields.io/badge/Status-Production%20Ready-success)
+![Tech Stack](https://img.shields.io/badge/Stack-Next.js_16_•_Cerebras_•_Fal.ai-blue)
 
-##🎯 The ProblemGenerative AI models like Midjourney or DALL-E are incredible at creativity but terrible at product fidelity. They inherently want to "dream" and reimagine, which is unacceptable for e-commerce. If you upload a specific Nike shoe, the AI will often change the laces, warp the logo, or alter the sole texture to fit the scene.
+**RaySKU Locker** allows brands to take a single transparent product photo (a "SKU") and place it into any environment imaginable using natural language, without **ever** hallucinating or altering the original product's pixels.
 
-**"SKU Locking"**—keeping the product exact while changing everything else—is the biggest hurdle in professional AI photography.
-
-##💡 The Solution: A Multi-Agent Physics PipelineRaySKU Locker solves this not with a single model, but with an **agentic workflow** that separates creative direction, set design, and photographic physics into distinct stages.
-
-We don't ask one AI to "draw a shoe on a mountain." We ask a team of AIs to build a scene around *your* shoe.
-
-###🏗️ ArchitectureThe pipeline consists of three main stages executing sequentially:
-
-####**Stage 1: The Creative Director (Brain)*** **Model:** **Cerebras Inference (Llama 3.1 70B)**
-* **Role:** Translates a vague user prompt (e.g., "Mount Fuji sunrise") into a highly structured, physics-based JSON brief.
-* **Output:** A JSON schema defining lighting direction (e.g., "Front-Left"), specific objects ("Torii gate located in foreground"), camera angle, and mood.
-
-####**Stage 2: The Set Designer (Background)*** **Model:** **Bria FIBO (via Fal.ai)**
-* **Role:** Generates a high-fidelity, photorealistic background plate based *only* on the setting and objects defined by the Agent. Crucially, it is instructed to leave negative space for the product.
-* **Why Bria?** It is trained on licensed data, making it safe for enterprise commercial use and exceptionally good at following structured scene instructions.
-
-####**Stage 3: The Gaffer & Compositor (Physics)*** **Model:** **IC-Light V2 (via Fal.ai)**
-* **Role:** The physical integration engine. It takes the original SKU (foreground), the generated Bria scene (background), and the lighting instructions from the Agent.
-* **The Magic:** It calculates how the light from the Bria background should hit the 3D geometry of the SKU, creating realistic shadows, reflections, and highlights *without altering the source pixels*.
+![RaySKU Locker Demo](https://via.placeholder.com/1200x600?text=Place+Your+Demo+Screenshot+or+GIF+Here)
 
 ---
 
-##🚀 Key Features* **🔒 100% SKU Lock:** The product pixels you upload are the exact pixels in the final image. No generative reimagining of the asset itself.
-* **🗣️ Natural Language Control:** Drive complex photographic physics (lighting angles, lens choices) with simple text descriptions.
-* **🕵️‍♂️ Staging Inspector:** A transparent UI panel that reveals the AI Agent's "JSON Brain," showing exactly how it interpreted your prompt into physics instructions.
-* **⚡ Blazing Fast Inference:** Powered by Cerebras for instant agent reasoning and Fal.ai's optimized GPU infrastructure for generation.
+## 🎯 The Problem: The "Hallucination" Gap
 
-##🛠️ Tech Stack* **Framework:** Next.js 16 (Turbopack)
-* **Styling:** Tailwind CSS v4
-* **UI Components:** Shadcn UI
-* **AI Agent API:** Cerebras (Llama 3.1)
-* **Generative Media API:** Fal.ai (Bria FIBO & IC-Light V2)
+Generative AI models (Flux, Midjourney, DALL-E) are creative engines, not physics engines. They inherently want to "dream" and reimagine. In e-commerce, this is fatal:
+* **The Hallucination:** Upload a specific running shoe, and the AI changes the laces, warps the logo, or invents a new sole texture.
+* **The Requirement:** **"SKU Locking"**—the ability to keep the product asset 100% pixel-perfect while completely generating the surrounding light and environment.
 
-##📦 Getting Started###Prerequisites* Node.js 18+
-* pnpm (recommended) or npm/yarn
+## 💡 The Solution: A Dual-Stage Agentic Pipeline
 
-###Installation1. **Clone the repository:**
-```bash
-git clone https://github.com/yourusername/raysku-locker.git
-cd raysku-locker
+RaySKU Locker solves this by decoupling **Creative Direction** from **Physical Compositing**. We don't ask one model to do everything. We employ a chain of specialized AI agents:
+
+### 🏗️ Architecture
+
+```mermaid
+graph TD
+    User["🗣️ User Prompt"] --> Agent["🧠 Creative Director (Cerebras/Llama 3.1)"]
+    Agent -->|JSON Brief| Inspector["📝 Staging Inspector (UI)"]
+    Agent -->|Scene Description| Stage1["🎨 Set Designer (Bria FIBO)"]
+    Agent -->|Lighting Physics| Stage2["💡 Gaffer & Compositor (IC-Light V2)"]
+    SKU["👟 Raw SKU (PNG)"] --> Stage2
+    Stage1 -->|Background Plate| Stage2
+    Stage2 -->|Relit Composite| Final["🖼️ Final 16-bit Asset"]
 
 ```
 
+1. **🧠 Stage 1: The Brain (Cerebras Llama 3.1)**
+* Translates vague vibes (e.g., "Mount Fuji sunrise") into a **physics-based JSON brief**.
+* Determines: Light direction, camera angle, specific objects, and negative space requirements.
 
-2. **Install dependencies:**
-```bash
+
+2. **🎨 Stage 2: The Set (Bria FIBO)**
+* Generates a safe, photorealistic background plate based *only* on the JSON spatial brief.
+* **Why Bria?** Enterprise-safe, licensed data training ensures high-fidelity backgrounds without copyright risks.
+
+
+3. **💡 Stage 3: The Physics (IC-Light V2)**
+* Calculates **Light Transport**. It takes the original SKU and the Bria background, then mathematically re-lights the SKU to match the environment's luminance and color temperature.
+* **Result:** A composite where the product looks like it was physically photographed on location.
+
+
+
+---
+
+##🚀 Key Features* **🔒 True SKU Lock:** The product pixels you upload are the exact pixels in the final image.
+* **🕵️‍♂️ Staging Inspector:** A real-time transparent UI panel that reveals the Agent's "JSON Brain," allowing you to verify lighting and camera decisions before generation.
+* **⚡ Blazing Fast Inference:** Powered by **Cerebras** for instant reasoning (<0.5s) and **Fal.ai** optimized GPUs for generation.
+* **💧 Hydration-Safe UI:** Built on Next.js 16 with robust client-side mounting checks for a glitch-free experience.
+
+##🛠️ Tech Stack* **Frontend:** Next.js 16 (App Router), Tailwind CSS v4, Lucide React
+* **UI Library:** Shadcn UI (Radix Primitives)
+* **AI Orchestration:** Cerebras (Llama 3.1 70B)
+* **Image Generation:** Fal.ai (Bria FIBO & IC-Light V2)
+
+---
+
+##📦 Getting Started###1. Clone & Install```bash
+git clone [https://github.com/mikoaro/raysku-locker.git](https://github.com/yourusername/raysku-locker.git)
+cd raysku-locker
 pnpm install
 
 ```
 
+###2. Configure EnvironmentCreate a `.env.local` file in the root directory. You only need two keys:
 
-3. **Set up Environment Variables:**
-Create a `.env.local` file in the root directory and add your API keys:
-```env
-# Fal.ai API Key for Image Generation Models
+```bash
+# 1. Get this from [https://fal.ai/dashboard/keys](https://fal.ai/dashboard/keys)
 FAL_KEY=your_fal_key_here
 
-# Cerebras API Key for the AI Agent
+# 2. Get this from [https://cloud.cerebras.ai/](https://cloud.cerebras.ai/)
 CEREBRAS_API_KEY=your_cerebras_key_here
 
-# Optional: Bria API Key (if needed for direct SDK usage)
-BRIA_KEY=optional_key_here
+# (Optional) Direct Bria SDK Key - Not required if using Fal
+BRIA_KEY=
 
 ```
 
-
-4. **Run the development server:**
-```bash
+###3. Run Development Server```bash
 pnpm run dev
 
 ```
 
+Open [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000) to enter the studio.
 
-5. Open [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000) with your browser.
+---
 
-##📸 Usage Workflow1. **Locker:** Drag and drop a transparent product PNG (SKU) into the left-hand "SKU Locker."
-2. **Prompt:** Select the SKU and type a scene description (e.g., "A luxury watch on a wet slate rock, moody lighting, moss in background").
-3. **Generate:** Click generate. Watch the "Staging Inspector" populate with the plan, and see the final composition appear center stage.
-4. **Download:** Get the high-fidelity asset ready for use.
+##📸 How to Use1. **Upload:** Drag a transparent PNG of your product into the **SKU Locker** (left sidebar).
+2. **Brief:** Select the SKU and type a prompt (e.g., *"A luxury watch on a wet slate rock, moody lighting, moss in background"*).
+3. **Inspect:** Watch the **Staging Inspector** (right sidebar) populate instantly with the Agent's lighting plan.
+4. **Generate:** Click "Generate" to run the pipeline.
+5. **Download:** Save the final asset as a high-fidelity image.
+
+---
+
+##📄 LicenseThis project is licensed under the MIT License - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.
+
+##🙏 Acknowledgements* **Bria AI** for the responsible, high-quality base models.
+* **Fal.ai** for the lightning-fast inference infrastructure.
+* **Cerebras** for enabling real-time agentic reasoning.
+
+```
+
+```
